@@ -24,13 +24,21 @@ namespace SendBytesThroughTCP
             {
                 string fileName = @"appsettings.json";
                 //string jsonString = File.ReadAllText(fileName);
-                string assemblyDirPath =Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                //string assemblyDirPath =Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string? assemblyDirPath =Path.GetDirectoryName(typeof(jsonConfig).Assembly.Location);
+                if (assemblyDirPath == null)
+                {
+                    return;
+                }
+                else { }
                 string fullFileName = assemblyDirPath + Path.DirectorySeparatorChar + fileName;
                 string jsonString = File.ReadAllText(fullFileName);
                 jsonConfig? jsonFileConfig = JsonSerializer.Deserialize<jsonConfig>(jsonString);
                 if (jsonFileConfig != null)
                 {
-                    string HesStringInfo = jsonFileConfig.PackageByte;
+                    string? HesStringInfo = jsonFileConfig.PackageByte;
+                    if(HesStringInfo == null) { return; }
+                    else { }
                     byte[] bytesList = new byte[HesStringInfo.Length / 2];
                     for (int i = 0; i < HesStringInfo.Length; i += 2)
                     {
